@@ -110,8 +110,14 @@ class PerceptronPlotter2D:
     
     def plot_interactive(self, weight_x, weight_y, bias, activation_function_index):
         weights = np.array([weight_x, weight_y])
+        
+        activation_name = list(self.activation_functions_dict.keys())[activation_function_index]
+        activation_title = str("Perception " + activation_name + 
+                           ", weight_x: " + str(weight_x) + 
+                           ", weight_y: " + str(weight_y) +
+                           ", bias: " + str(bias))
        
-        activation_function = self.activation_functions_dict.get(list(self.activation_functions_dict.keys())[activation_function_index])
+        activation_function = self.activation_functions_dict.get(activation_name)
         output_values = perceptron(self.inputs_xy, weights, bias, activation_function)
         output_matrix = np.reshape(output_values, self.input_x_matrix.shape)
         
@@ -125,7 +131,7 @@ class PerceptronPlotter2D:
         pl.xlabel('x')
         pl.ylabel('y')
         pl.grid()
-        pl.title('Perceptron output')
+        pl.title(activation_title)
         if len(self.data) > 0:
             inputs = self.data[:,0:2]
             targets = self.data[:,2]
@@ -136,7 +142,7 @@ class PerceptronPlotter2D:
             pl.xlabel('Iterations')
             pl.ylabel('MSE')
             pl.grid()
-            pl.title('Perceptron error')
+            pl.title('Perceptron ' + activation_name + ' error')
         pl.tight_layout()
 
     def init_animation(self):
@@ -144,7 +150,7 @@ class PerceptronPlotter2D:
             self.ax_im = pl.subplot(121)
             pl.xlabel('x')
             pl.ylabel('y')
-            pl.title('Perceptron output')
+            pl.title('Perceptron Animation')
             pl.grid()
         self.im = self.ax_im.imshow(np.zeros(self.input_x_matrix.shape), interpolation='None', vmin=-1, vmax=1, extent=(self.xlim[0], self.xlim[1], self.ylim[0], self.ylim[1]))
         pl.colorbar(self.im, shrink=0.7)
@@ -155,7 +161,7 @@ class PerceptronPlotter2D:
             self.ax_line = pl.subplot(122)
             pl.xlabel('Iterations')
             pl.ylabel('MSE')
-            pl.title('Perceptron error')
+            pl.title('Perceptron Animation error')
             pl.grid()
         self.line, = self.ax_line.plot([],[])
         self.line.set_data([], [])
