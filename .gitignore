@@ -2,3 +2,5 @@
 *.DS_Store
 
 09/claret_09/__pycache__/
+
+09/claret_09/\.ipynb_checkpoints/
